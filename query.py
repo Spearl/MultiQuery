@@ -7,7 +7,13 @@ def main():
 	with open(sys.argv[1], 'r') as f:
 		q = Queue()
 		for line in f:
-			q.put(line)
+			q.put(line.strip())
+
+	while q.empty() is False:
+		print q.get()
+
+	print "Done!"
+
 
 
 
