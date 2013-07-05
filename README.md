@@ -9,4 +9,4 @@ I'm using paramiko (https://github.com/paramiko/paramiko) to handle the SSH conn
 
 To run: ./MultiQuery [target file]
 
-Current status: single threaded solution
+Current status: parallel solution but output still in race condition
