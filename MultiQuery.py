@@ -2,6 +2,8 @@
 
 import sys
 import paramiko
+import traceback
+from multiprocessing import Pool
 from Queue import Queue
 
 def query(target):
@@ -31,20 +33,20 @@ def query(target):
 	    sys.exit(1)
 
 def main():
-	# Destination nodes to be queried
-	node_list = Queue()
+	# Read destination nodes to be queried
 	with open(sys.argv[1], 'r') as f:
-		for line in f:
-			node_list.put(line.strip())
+		node_list = [ line.strip() for line in f.readlines() ]
+
+	# Create worker pool with process count equal to cpu_count (default)
+	pool = Pool()
+
+	# Query each node
+	pool.map(query, node_list)
+	pool.close()
+	pool.join()
 
 	# Collection of query responses to be consumed by write thread
 	# log_entries = Queue()
-
-	while node_list.empty() is False:
-		query(node_list.get())
-
-	print "Done!"
-
 
 
 if __name__ == '__main__':
